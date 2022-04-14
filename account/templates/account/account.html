@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Account
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
+
+
+
+    <main class="form-signin">
+        <form method="post">
+            {% csrf_token %}
+            <h1 style="text-align: center" class="h3 mb-3 fw-normal ">Update Your Account</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" name="full_name" id="full_name" placeholder="name@example.com"
+                       value="{{ request.user.full_name }}">
+                <label for="full_name">Name</label>
+            </div>
+            <div class="form-floating">
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com"
+                       value="{{ request.user.email }}">
+                <label for="email">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" name="username" id="username" placeholder="name@example.com"
+                       value="{{ request.user.username }}">
+                <label for="username">Name</label>
+            </div>
+
+            <br>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Update Account</button>
+
+            <div style="height: 20px"></div>
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p style="color: red">* {{ error }}</p>
+                    {% endfor %}
+
+                {% endif %}
+            {% endfor %}
+            {# Aqui será exibido erros que n tem relação com os campos, como o criado lá na função clean, caso os dados inserido não retornem um usuário válido#}
+            {% for error in form.non_field_errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </form>
+
+
+        {% if success_message %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ success_message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        {% endif %}
+
+
+        <div class="d-flex flex-column">
+            <a style="text-decoration: none" class=" m-auto" href="{% url 'password_change' %}">Change Password</a>
+        </div>
+
+    </main>
+
+{% endblock %}

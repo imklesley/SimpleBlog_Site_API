@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create Post
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex flex-column">
+
+            <form class="m-auto" method="post" action="." ENCTYPE="multipart/form-data">
+                <h1>Create a Post</h1>
+                {% csrf_token %}
+                {% for field in form %}
+                    <span>{{ field.label }}</span>
+                    <p>{{ field }}</p>
+                    {% if field.has_errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+
+                <button style="margin-bottom: 1em" type="submit"> Create Post</button>
+
+
+                {% if success_message %}
+
+                    <div class=" m-auto alert alert-success alert-dismissible fade show" role="alert">
+                        {{ success_message|safe }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                {% endif %}
+            </form>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}

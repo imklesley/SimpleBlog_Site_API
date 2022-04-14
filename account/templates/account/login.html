@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
+
+
+
+    <main class="form-signin">
+        <form method="post">
+            {% csrf_token %}
+            <img class=" d-flex flex-row align-items-center  top-header mx-auto"
+                 src="{% static 'assets/logos/BlogSnake-logos_black.png' %}"
+                 alt="Logo of the blog, it is a snake with the name BlogSnake" height="200" width="200">
+            <h1 style="text-align: center" class="h3 mb-3 fw-normal ">Please Log in</h1>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                <label for="email">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                <label for="password">Password</label>
+            </div>
+
+            <div style="text-align: center" class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
+
+            <br>
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ forloop.counter }} - {{ error }}</p>
+                    {% endfor %}
+
+                {% endif %}
+            {% endfor %}
+            {# Aqui será exibido erros que n tem relação com os campos, como o criado lá na função clean, caso os dados inserido não retornem um usuário válido#}
+            {% for error in form.non_field_errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </form>
+
+        <br>
+        <div class="d-flex flex-column">
+            <a class="m-auto" style="text-decoration: none" href="{% url  'password_reset' %}"> Forgot Password? Reset Here!</a>
+        </div>
+    </main>
+{% endblock %}
+

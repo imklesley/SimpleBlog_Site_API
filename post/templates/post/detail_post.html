@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container">
+        <div class="d-flex flex-column">
+
+            <img class="m-auto img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}" >
+            <br>
+            <h1>{{ post.title }}</h1>
+            <p  class="m-auto">{{ post.body|safe }}</p>
+            <br>
+            {% if post.author == request.user %}
+                <a class="btn btn-outline-success" href="{% url 'post:edit_post' post.slug %}">Edit Post</a>
+                <br>
+                <a class="btn btn-outline-danger" href="{% url 'post:delete_post' post.slug %}">Delete Post</a>
+                <br>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Registration
+{% endblock %}
+
+{% block content %}
+    <style>
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: 10px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="text"] {
+            margin-bottom: 10px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+
+        .form-signin input[type="password"] {
+            margin-bottom: -1px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+
+    </style>
+
+
+
+    <main class="form-signin">
+        <form method="post">
+            {% csrf_token %}
+            <img class=" d-flex flex-row align-items-center  top-header mx-auto"
+                 src="{% static 'assets/logos/BlogSnake-logos_black.png' %}"
+                 alt="Logo of the blog, it is a snake with the name BlogSnake" height="200" width="200">
+            <h1 style="text-align: center" class="h3 mb-3 fw-normal ">Create an account</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" name="full_name" id="full_name" required autofocus>
+                <label for="full_name">Full Name</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" required>
+                <label for="cpf">CPF</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com"
+                       required>
+                <label for="email">Email address</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" name="username" id="username" required>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="password" class="form-control" name="password1" id="password1" required>
+                <label for="password1">Password</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="password" class="form-control" name="password2" id="password2" required>
+                <label for="password2">Password Confirmation</label>
+            </div>
+
+
+            <br>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+
+            <div style="height: 20px"></div>
+
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p style="color: red">* {{ error }}</p>
+                    {% endfor %}
+
+                {% endif %}
+            {% endfor %}
+            {# Aqui será exibido erros que n tem relação com os campos, como o criado lá na função clean, caso os dados inserido não retornem um usuário válido#}
+            {% for error in form.non_field_errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </form>
+
+
+        {% if success_message %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ success_message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+        {% endif %}
+
+
+    </main>
+{% endblock %}

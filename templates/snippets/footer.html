@@ -1,0 +1,16 @@
+<style>
+    footer{
+        min-height: 100px;
+    }
+</style>
+
+
+<footer class="d-flex flex-row align-items-center bg-white shadow-lg">
+    <p class="m-auto" style="text-align: center">BlogSnake | by Klesley Gonçalves | <span id="year"></span> </p>
+</footer>
+
+
+<script>
+    // Pega o ano atua e substitui no span com id "year"
+    document.getElementById("year").innerHTML = new Date().getFullYear().toString();
+</script>

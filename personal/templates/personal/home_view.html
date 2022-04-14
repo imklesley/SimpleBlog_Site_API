@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <style>
+
+        @media (max-width: 768px) {
+            .right-column {
+                margin-left: 0;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .right-column {
+                margin-left: 20px;
+            }
+        }
+
+        .blog-post-container {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .create-post-bar {
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .left-column {
+            padding: 0;
+        }
+
+        .right-column {
+            padding: 0;
+        }
+
+        .lead {
+            font-size: 17px;
+        }
+    </style>
+
+
+    <div class="container">
+        <div class="row">
+
+            <!--Right 'create post' bar-->
+
+            <div class="d-lg-none mb-3">
+                <div class="create-post-bar card m-auto d-flex flex-column p-3">
+                    <p class="lead">In this course you'll learn how to build a simple blog with user authentication and
+                        blog CRUD functionality. Django is a powerful
+                        framework and you'll see why in this course.</p>
+                    <p class="m-auto"><a class="btn btn-primary" href="{% url 'post:create_post' %}">Create post</a></p>
+                </div>
+            </div>
+            <!--End Right 'create post' bar-->
+
+            <!--Blog feed-->
+            <!--São 12 colunas no bootstrap, pule uma e ocupe 7: cod. abaixo-->
+            <div class="left-column col-lg-7 offset-lg-1">
+
+                {% if posts %}
+                    {% if query %}
+                        <h3 class="card-title">You search for: "{{ query }}"</h3>
+                        <br>
+                    {% endif %}
+                    {% for post in posts %}
+                        <div class="card shadow-sm">
+                            <img class="img-fluid   " src="{{ post.image.url }}" alt="{{ post.title }}">
+
+                            <div class="card-body">
+                                <p class="card-text">{{ post.title }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    {% if post.author == request.user %}
+                                        <div class="btn-group">
+                                            <a class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'post:detail_post' post.slug %}">View</a>
+                                            <a class="btn btn-sm btn-outline-secondary"
+                                               href="{% url 'post:edit_post' post.slug %}">Edit</a>
+                                        </div>
+                                    {% else %}
+                                        <a class="btn btn-sm btn-outline-secondary"
+                                           href="{% url 'post:detail_post' post.slug %}">View</a>
+                                    {% endif %}
+                                    <small class="text-muted">{{ post.date_published }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    {% endfor %}
+                {% else %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="card m-auto">
+                                <div class="card-body mt-2 mb-2">
+                                    <h2 class="card-title">
+                                        No results
+                                    </h2>
+                                    <p class="card-text">
+                                        There were no results matching your search: "{{ query }}"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% include 'personal/snippets/home_pagination_snippet.html' with posts=posts %}
+            </div>
+            <!--End Blog feed-->
+
+
+            <!--Right 'create post' column-->
+            <div class="right-column col-lg-3 d-lg-flex d-none flex-column">
+
+                <div class="card create-post-bar d-flex flex-column p-3">
+                    <p class="lead">This project is blog with user authentication and
+                        blog CRUD functionality. Django is a powerful
+                        framework and you can see why.</p>
+                    <p class="m-auto"><a class="btn btn-primary" href="{% url 'post:create_post' %}">Create post</a></p>
+                </div>
+
+            </div>
+            <!--End Right 'create post' column-->
+        </div>
+    </div>
+
+
+
+{% endblock %}
